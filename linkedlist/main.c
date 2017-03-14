@@ -52,6 +52,12 @@ int main()
 	for (int i = 0; i < SIZE; i++) {
 		printf("Retriving num.%d: %d\n", i, *(int*)LinkedList_Get(list, i));
 	}
+	LinkedList_t* sublist = LinkedList_SubList(list, 0, 100);
+	printf("SubList Size: %d", LinkedList_Size(sublist));
+	for (int i = 0; i < LinkedList_Size(sublist); i++) {
+		printf("Retriving num.%d from SubList: %d\n", i, *(int*)LinkedList_Get(sublist, i));
+	}
+	LinkedList_Destroy(sublist);
 	LinkedList_Destroy(list);
 	while (getchar() == '\0');
 	return 0;

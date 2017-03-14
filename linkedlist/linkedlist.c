@@ -130,16 +130,24 @@ uint32_t LinkedList_Size(const LinkedList_t* list)
 
 LinkedList_t* LinkedList_SubList(LinkedList_t* list, uint32_t fromIndex, uint32_t toIndex)
 {
-	if (list == NULL || fromIndex < toIndex) return NULL;
-	if (list->head != NULL && list->tail) {
+	if (list == NULL || fromIndex >= toIndex) return NULL;
+	if (list->head != NULL && list->tail != NULL) {
+		uint32_t size = toIndex - fromIndex;
+		if (size > list->size) return NULL;
 		LinkedList_t* sublist = LinkedList_Create();
 		if (sublist == NULL) {
 			return NULL;
 		}
-		sublist->size = toIndex - fromIndex;
-		sublist->head = LinkedNode_SearchForward(list->head, fromIndex);
-		sublist->tail = LinkedNode_SearchForward(sublist->head, toIndex - fromIndex);
-		return sublist;
+		else {
+			uint32_t i = 0;
+			LinkedNode_t* node = LinkedNode_SearchForward(list->head, fromIndex);
+			for (; i < size; i++) {
+				LinkedList_Add(sublist, node->item);
+				node = node->next;
+			}
+			sublist->size = size;
+			return sublist;
+		}
 	}
 	return NULL;
 }
